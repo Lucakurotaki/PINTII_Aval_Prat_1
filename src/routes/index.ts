@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { roteadorAutent } from "./authRoutes";
+import { roteadorAuth } from "./authRoutes";
+import { roteadorLeitura } from "./readingPostRoutes";
 
 const roteador = Router();
 
-roteador.use("/auth", roteadorAutent);
+roteador.use("/auth", roteadorAuth);
+roteador.use("/leitura", roteadorLeitura);
 
 export default roteador;

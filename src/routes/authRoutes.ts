@@ -1,13 +1,16 @@
 import { Router } from "express";
-import { ControladorAutent } from "../controllers/authController";
+import { ControladorAuth } from "../controllers/authController";
 
-const controladorAutent = new ControladorAutent();
+const controladorAuth = new ControladorAuth();
 
-const roteadorAutent = Router();
+const roteadorAuth = Router();
 
-roteadorAutent.post("/cadastrar", controladorAutent.cadastrar);
-roteadorAutent.post('/entrar', controladorAutent.entrar);
-roteadorAutent.post('/ativar', controladorAutent.ativar);
-roteadorAutent.get('/refresh');
+roteadorAuth.post("/cadastrar", controladorAuth.cadastrar);
+roteadorAuth.post('/entrar', controladorAuth.entrar);
+roteadorAuth.post('/ativar', controladorAuth.ativarConta);
+roteadorAuth.post('/refresh', controladorAuth.refresh);
 
-export {roteadorAutent};
+roteadorAuth.post('/cadastrar-telefone', controladorAuth.cadastrarTelefone);
+roteadorAuth.post('/ativar-telefone', controladorAuth.ativarTelefone);
+
+export {roteadorAuth};

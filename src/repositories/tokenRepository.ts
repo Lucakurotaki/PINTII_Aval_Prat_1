@@ -2,14 +2,8 @@ import { Client, credenciais } from "../database/postgresPersistence";
 import jwt,  {JwtPayload} from "jsonwebtoken";
 import 'dotenv/config';
 
-export class RepositorioAutentToken{
-    public async salvar(email: string){
-        const iat = Date.now();
-
-        const accessToken = jwt.sign({email: email, tokeniat: iat}, process.env.JWT_SECRET!, {expiresIn: 60});
-        const refreshToken = jwt.sign({email: email}, process.env.JWT_SECRET!, {expiresIn: 120});
-
-
+export class RepositoryToken{
+    public async salvar(email: string, iat: string, refreshToken: string){
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -31,7 +25,7 @@ export class RepositorioAutentToken{
             await clientePg.end();
         }else{
             const textoAtualizar = `
-                UPDATE usuariotoken SET iat = $1, refreshtoken = $2 WHERE usuario_email = $2
+                UPDATE usuariotoken SET iat = $1, refreshtoken = $2 WHERE usuario_email = $3
             `;
 
             const valoresAtualizar = [iat.toString(), refreshToken, email]
@@ -41,7 +35,7 @@ export class RepositorioAutentToken{
             await clientePg.end();
         }
 
-        return {accessToken, refreshToken};
+        return true;
     }
 
     public async verificarAccessToken(token: string){
@@ -69,4 +63,37 @@ export class RepositorioAutentToken{
 
         return email;
     }
+
+    public async verificarRefreshToken(email: string){
+        const clientePg = new Client(credenciais);
+        await clientePg.connect();
+
+        const textoEncontrar = "SELECT * FROM usuariotoken WHERE usuario_email = $1";
+        const valorEncontrar = [email];
+
+        const usuarioEncontrado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        await clientePg.end();
+
+        const tokenEncontrado = usuarioEncontrado.rows[0]['refreshtoken'];
+
+        return tokenEncontrado;
+    }
+
+    public async verificarAccessToken2(email: string){
+        const clientePg = new Client(credenciais);
+        await clientePg.connect();
+
+        const textoEncontrar = "SELECT * FROM usuariotoken WHERE usuario_email = $1";
+        const valoresEncontrar = [email];
+
+        const usuarioEncontrado = await clientePg.query(textoEncontrar, valoresEncontrar);
+
+        await clientePg.end();
+
+        const iatEncontrado = usuarioEncontrado.rows[0]['iat'];
+
+        return iatEncontrado;
+    }
+    
 }
