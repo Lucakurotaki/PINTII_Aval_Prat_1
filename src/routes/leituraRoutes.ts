@@ -8,6 +8,8 @@ const roteadorLeitura = Router();
 
 roteadorLeitura.use(middlewareAutoriz);
 
-roteadorLeitura.get('/adicionar', controladorLeitura.adicionar);
+roteadorLeitura.post('/adicionar', controladorLeitura.adicionar);
+roteadorLeitura.get('/listar-geral', controladorLeitura.listarGeral);
+roteadorLeitura.get('/listar-usuario/:id', controladorLeitura.listarPorUsuario);
 
 export {roteadorLeitura};

@@ -8,12 +8,12 @@ export class RepositoryLeitura{
         await clientePg.connect();
 
         const textoInserir = `
-            INSERT INTO leitura (usuario_id, titulo, sub_titulo, tags)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO leitura (usuario_id, titulo, sub_titulo, tags, status)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING leitura_id
         `;
 
-        const valoresInserir = [leitura.usuario_id, leitura.titulo, leitura.sub_titulo, leitura.tags];
+        const valoresInserir = [leitura.usuario_id, leitura.titulo, leitura.sub_titulo, leitura.tags, "Em andamento"];
 
         const resultado = await clientePg.query(textoInserir, valoresInserir);
 
