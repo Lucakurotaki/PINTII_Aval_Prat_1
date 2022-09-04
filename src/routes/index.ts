@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { roteadorAuth } from "./authRoutes";
-import { roteadorLeitura } from "./readingPostRoutes";
+import { roteadorLeitura } from "./leituraRoutes";
 
 const roteador = Router();
 

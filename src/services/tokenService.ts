@@ -11,8 +11,8 @@ export class ServiceToken{
     public async salvar(email: string){
         const iat = Date.now().toString();
 
-        const accessToken = jwt.sign({email: email, tokeniat: iat}, process.env.JWT_SECRET!, {expiresIn: 60});
-        const refreshToken = jwt.sign({email: email}, process.env.JWT_SECRET!, {expiresIn: 120});
+        const accessToken = jwt.sign({email: email, tokeniat: iat}, process.env.JWT_SECRET!, {expiresIn: '5m'});
+        const refreshToken = jwt.sign({email: email}, process.env.JWT_SECRET!, {expiresIn: '10m'});
 
         await this.repositorio.salvar(email, iat, refreshToken);
 
@@ -42,7 +42,7 @@ export class ServiceToken{
             throw new Error('Token Expirado.');
         }
 
-        const iatEncontrado = await this.repositorio.verificarAccessToken2(email);
+        const iatEncontrado = await this.repositorio.verificarAccessToken(email);
 
         if(iatEncontrado != (tokeniat!.toString())){
             throw new Error("Token revogado.");

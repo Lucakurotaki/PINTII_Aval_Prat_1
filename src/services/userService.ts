@@ -53,4 +53,10 @@ export class ServiceUsuario{
 
         return {mensagem: "Telefone ativado."}
     }
+
+    public async encontrarUsuario(email: string){
+        const usuarioEncontrado = await this.repositorio.encontrarUsuario(email);
+
+        return usuarioEncontrado;
+    }
 }

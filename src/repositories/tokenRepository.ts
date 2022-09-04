@@ -38,13 +38,7 @@ export class RepositoryToken{
         return true;
     }
 
-    public async verificarAccessToken(token: string){
-        const {email, tokeniat} = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-
-        if(!{email, tokeniat}){
-            throw new Error('Token Expirado.');
-        }
-
+    public async verificarAccessToken(email: string){
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -57,11 +51,7 @@ export class RepositoryToken{
 
         const iatEncontrado = usuarioEncontrado.rows[0]['iat'];
 
-        if(iatEncontrado != (tokeniat!.toString())){
-            throw new Error("Token revogado.");
-        }
-
-        return email;
+        return iatEncontrado;
     }
 
     public async verificarRefreshToken(email: string){
@@ -80,20 +70,6 @@ export class RepositoryToken{
         return tokenEncontrado;
     }
 
-    public async verificarAccessToken2(email: string){
-        const clientePg = new Client(credenciais);
-        await clientePg.connect();
-
-        const textoEncontrar = "SELECT * FROM usuariotoken WHERE usuario_email = $1";
-        const valoresEncontrar = [email];
-
-        const usuarioEncontrado = await clientePg.query(textoEncontrar, valoresEncontrar);
-
-        await clientePg.end();
-
-        const iatEncontrado = usuarioEncontrado.rows[0]['iat'];
-
-        return iatEncontrado;
-    }
+    
     
 }

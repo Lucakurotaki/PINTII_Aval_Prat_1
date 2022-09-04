@@ -1,6 +1,5 @@
 import { Client, credenciais } from "../database/postgresPersistence";
 import { Usuario } from "../entities/user";
-import bcrypt from 'bcrypt';
 
 export class RepositoryUsuario{
 
@@ -23,37 +22,6 @@ export class RepositoryUsuario{
         const usuarioId = resultado.rows[0]['usuario_id'] as number;
 
         return usuarioId;
-    }
-    
-
-    public async entrar(usuario: Usuario){
-        const clientePg = new Client(credenciais);
-
-        await clientePg.connect();
-
-        const textoEncontrar = 'SELECT * FROM usuario WHERE usuario_email = $1';
-        const valorEncontrar = [usuario.email];
-
-        const usuarioEncontrado = await clientePg.query(textoEncontrar, valorEncontrar);
-
-
-        await clientePg.end();
-
-        if(usuarioEncontrado.rows.length == 0){
-            throw new Error("Conta não encontrada.");
-        }
-
-        if(!usuarioEncontrado.rows[0]['conta_ativa']){
-            throw new Error("Conta não ativada.");
-        }
-
-        if(!bcrypt.compareSync(usuario.senha, usuarioEncontrado.rows[0]['usuario_senha'])){
-            throw new Error("Senha inválida.");
-        }
-
-        const dadosUsuario = usuarioEncontrado.rows[0];
-
-        return {usuario: dadosUsuario};
     }
 
     public async ativarConta(email: string){
