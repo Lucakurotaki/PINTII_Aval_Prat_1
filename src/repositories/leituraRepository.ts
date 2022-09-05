@@ -32,6 +32,8 @@ export class RepositoryLeitura{
 
         const resultado = await clientePg.query(textoEncontrar);
 
+        await clientePg.end();
+
         const leituras = []
 
         for(let i = 0; i < resultado.rows.length; i++){
@@ -49,6 +51,8 @@ export class RepositoryLeitura{
         const valorEncontrar = [usuarioId];
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        await clientePg.end();
 
         const leituras = []
 
@@ -68,6 +72,8 @@ export class RepositoryLeitura{
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
 
+        await clientePg.end();
+
         return resultado.rows[0] as Leitura;
     }
 
@@ -79,6 +85,8 @@ export class RepositoryLeitura{
         const valorEncontrar = [leituraId];
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        await clientePg.end();
 
         return resultado.rows[0]['titulo'];
     }
@@ -92,6 +100,8 @@ export class RepositoryLeitura{
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
 
+        await clientePg.end();
+
         return resultado.rows[0]['pagina_atual'];
     }
 
@@ -103,6 +113,8 @@ export class RepositoryLeitura{
         const valorEncontrar = [status, leituraId];
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        await clientePg.end();
 
         return resultado.rows[0]['status'];
     }

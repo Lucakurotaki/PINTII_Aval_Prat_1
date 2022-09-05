@@ -31,6 +31,8 @@ export class RepositoryAnotacao{
         const valorEncontrar = [anotacaoId];
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+        
+        await clientePg.end();
 
         return resultado.rows[0] as Anotacao;
     }
@@ -43,6 +45,8 @@ export class RepositoryAnotacao{
         const valorEncontrar = [leituraId];
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        await clientePg.end();
 
         const anotacoes = []
 
@@ -61,6 +65,8 @@ export class RepositoryAnotacao{
         const valorEncontrar = [anotacaoId];
 
         const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        await clientePg.end();
 
         return resultado.rows[0]['leitura_id'];
     }

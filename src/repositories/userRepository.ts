@@ -31,7 +31,11 @@ export class RepositoryUsuario{
         const textoAtualizar = 'UPDATE usuario SET conta_ativa = true WHERE usuario_email = $1';
         const valorAtualizar = [email];
 
-        return await clientePg.query(textoAtualizar, valorAtualizar);
+        const resultado = await clientePg.query(textoAtualizar, valorAtualizar);
+
+        await clientePg.end();
+
+        return resultado;
     }
 
     public async ativarTelefone(email: string, telefone: number){
@@ -41,7 +45,11 @@ export class RepositoryUsuario{
         const textoAtualizar = 'UPDATE usuario SET usuario_telefone = $1 WHERE usuario_email = $2';
         const valorAtualizar = [telefone, email];
 
-        return await clientePg.query(textoAtualizar, valorAtualizar);
+        const resultado = await clientePg.query(textoAtualizar, valorAtualizar);
+
+        await clientePg.end();
+
+        return resultado;
     }
 
     public async buscarUsuario(email: string){
@@ -69,6 +77,8 @@ export class RepositoryUsuario{
         const valorEncontrarTelefone = [telefone];
 
         const resultadoTelefone = await clientePg.query(textoEncontrarTelefone, valorEncontrarTelefone);
+
+        await clientePg.end();
 
         return resultadoTelefone.rows[0];
     }

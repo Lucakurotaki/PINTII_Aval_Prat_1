@@ -29,6 +29,8 @@ export class RepositoryAtivacao{
 
         const resultadoEncontrado = await clientePg.query(textoEncontrar, valoresEncontrar);
 
+        await clientePg.end();
+
         return resultadoEncontrado.rows[0];
     }
 
@@ -58,6 +60,8 @@ export class RepositoryAtivacao{
         const valoresEncontrar = [telefone, codigo];
 
         const resultadoEncontrado = await clientePg.query(textoEncontrar, valoresEncontrar);
+
+        await clientePg.end();
 
         return resultadoEncontrado.rows[0];
     }

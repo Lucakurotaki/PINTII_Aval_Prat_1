@@ -1,47 +1,47 @@
-import { Anotacao } from "../entities/note";
 import { Request, Response } from "express";
+import { Like } from "../entities/like";
 import { RepositoryLeitura } from "../repositories/leituraRepository";
-import { RepositoryAnotacao } from "../repositories/noteRepository";
+import { RepositoryLike } from "../repositories/likeRepository";
 import { RepositoryUsuario } from "../repositories/userRepository";
 import { ServiceLeitura } from "../services/leituraService";
-import { ServiceAnotacao } from "../services/noteService";
+import { ServiceLike } from "../services/likeService";
 import { ServiceUsuario } from "../services/userService";
 
-export class ControladorAnotacao{
-    public async adicionar(req: Request, res: Response): Promise<Response>{
-        const repositorioAnotacao = new RepositoryAnotacao();
-        const serviceAnotacao = new ServiceAnotacao(repositorioAnotacao);
-        
+export class ControladorLike{
+    public async curtir(req: Request, res: Response): Promise<Response>{
         const repositorioLeitura = new RepositoryLeitura();
         const serviceLeitura = new ServiceLeitura(repositorioLeitura);
+
+        const repositorioLike = new RepositoryLike();
+        const serviceLike = new ServiceLike(repositorioLike);
 
         const repositorioUsuario = new RepositoryUsuario();
         const serviceUsuario = new ServiceUsuario(repositorioUsuario);
 
-        const {usuario_email, leitura_id, texto} = req.body;
+        const {usuario_email, leitura_id} = req.body;
 
         try{
             const leitura = await serviceLeitura.buscarPorId(leitura_id);
 
             if(!leitura){
-                throw new Error("Leitura não encontrada.");
+                throw new Error("Leitura não encontrada.")
             }
 
             const usuario = await serviceUsuario.buscarUsuario(usuario_email);
 
             const usuario_id = usuario['usuario_id'];
 
-            if(usuario_id != leitura.usuario_id){
-                throw new Error("Acesso negado.");
+            if(usuario_id == leitura.usuario_id){
+                throw new Error("Não é possível curtir a leitura própria.");
             }
 
-            const anotacao = {usuario_id, leitura_id, texto} as Anotacao;
+            const like = {leitura_id, usuario_id} as Like;
 
-            const anotacaoId = await serviceAnotacao.adicionar(anotacao);
+            const likeId = await serviceLike.curtir(like);
 
-            const anotacaoAdicionada = await serviceAnotacao.buscarPorId(anotacaoId);
+            const likeAdicionado = await serviceLike.buscarPorId(likeId);
 
-            return res.status(201).json({mensagem: `[${leitura.titulo}] anotação adicionada com sucesso.`, anotacao: anotacaoAdicionada});
+            return res.status(201).json({mensagem: `[${leitura.titulo}] curtida com sucesso.`, like: likeAdicionado});
         }catch(e){
             const erro = e as Error;
             return res.status(400).json({erro: erro.message});
@@ -49,8 +49,8 @@ export class ControladorAnotacao{
     }
 
     public async listar(req: Request, res: Response): Promise<Response>{
-        const repositorioAnotacao = new RepositoryAnotacao();
-        const serviceAnotacao = new ServiceAnotacao(repositorioAnotacao);
+        const repositorioLike = new RepositoryLike();
+        const serviceLike = new ServiceLike(repositorioLike);
 
         const repositorioLeitura = new RepositoryLeitura();
         const serviceLeitura = new ServiceLeitura(repositorioLeitura);
@@ -64,53 +64,50 @@ export class ControladorAnotacao{
                 throw new Error("Leitura não encontrada.");
             }
 
-            const lista = await serviceAnotacao.listar(leitura_id);
+            const lista = await serviceLike.listar(leitura_id);
 
-            return res.status(200).json({mensagem: `Anotações da leitura [${leitura.titulo}] retornada com sucesso.`, lista})
+            return res.status(200).json({mensagem: `Likes da leitura [${leitura.titulo}] retornada com sucesso.`, lista})
         }catch(e){
             const erro = e as Error;
             return res.status(400).json({erro: erro.message});
         }
     }
 
-    public async remover(req: Request, res: Response): Promise<Response>{
-        const repositorioAnotacao = new RepositoryAnotacao();
-        const serviceAnotacao = new ServiceAnotacao(repositorioAnotacao);
-
+    public async descurtir(req: Request, res: Response): Promise<Response>{
         const repositorioLeitura = new RepositoryLeitura();
         const serviceLeitura = new ServiceLeitura(repositorioLeitura);
+
+        const repositorioLike = new RepositoryLike();
+        const serviceLike = new ServiceLike(repositorioLike);
 
         const repositorioUsuario = new RepositoryUsuario();
         const serviceUsuario = new ServiceUsuario(repositorioUsuario);
 
-        const {usuario_email, anotacao_id} = req.body;
+        const {usuario_email, like_id} = req.body;
 
         try{
+            const like = await serviceLike.buscarPorId(like_id);
 
-            const anotacao = await serviceAnotacao.buscarPorId(anotacao_id);
-
-            if(!anotacao){
-                throw new Error("Anotação não encontrada.")
+            if(!like){
+                throw new Error("Like não encontrado.");
             }
 
             const usuario = await serviceUsuario.buscarUsuario(usuario_email);
 
             const usuario_id = usuario['usuario_id'];
 
-            if(usuario_id != anotacao.usuario_id){
+            if(usuario_id != like.usuario_id){
                 throw new Error("Acesso negado.")
             }
 
-            const leituraId = await serviceAnotacao.remover(anotacao_id);
+            const leituraId = await serviceLike.descurtir(like_id);
 
             const leitura = await serviceLeitura.buscarPorId(leituraId);
 
-            return res.status(200).json({message: `Anotação da leitura [${leitura.titulo}] removida com sucesso.`})
+            return res.status(200).json({message: `Leitura [${leitura.titulo}] descurtido com sucesso.`});
         }catch(e){
             const erro = e as Error;
             return res.status(400).json({erro: erro.message});
         }
-
-
     }
 }
