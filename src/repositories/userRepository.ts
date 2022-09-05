@@ -44,7 +44,7 @@ export class RepositoryUsuario{
         return await clientePg.query(textoAtualizar, valorAtualizar);
     }
 
-    public async encontrarUsuario(email: string){
+    public async buscarUsuario(email: string){
         const clientePg = new Client(credenciais);
 
         await clientePg.connect();
@@ -61,7 +61,7 @@ export class RepositoryUsuario{
         return usuarioEncotrado;
     }
 
-    public async encontrarPorTelefone(telefone: string){
+    public async buscarPorTelefone(telefone: string){
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 

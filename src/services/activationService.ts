@@ -23,7 +23,7 @@ export class ServiceAtivacao{
         const agora = Date.now();
         const codigoString = codigo.toString()
 
-        const usuarioEncontrado = await this.repositorioUsuario.encontrarUsuario(email);
+        const usuarioEncontrado = await this.repositorioUsuario.buscarUsuario(email);
 
         if(usuarioEncontrado == undefined){
             throw new Error("Usuario não cadastrado.");
@@ -48,7 +48,7 @@ export class ServiceAtivacao{
     }
 
     public async gerarCodigoSMS(email: string, telefone: number){
-        const usuarioEncontrado = await this.repositorioUsuario.encontrarUsuario(email);
+        const usuarioEncontrado = await this.repositorioUsuario.buscarUsuario(email);
 
         if(usuarioEncontrado == undefined){
             throw new Error("Usuário não cadastrado.");
@@ -64,7 +64,7 @@ export class ServiceAtivacao{
 
         const telefoneString = telefone.toString();
 
-        const usuarioTelefone = await this.repositorioUsuario.encontrarPorTelefone(telefoneString);
+        const usuarioTelefone = await this.repositorioUsuario.buscarPorTelefone(telefoneString);
 
         if(usuarioTelefone != undefined){
             throw new Error("Já existe uma conta cadastrada com esse número.");
@@ -84,7 +84,7 @@ export class ServiceAtivacao{
         const codigoString = codigo.toString();
         const telefoneString = telefone.toString();
 
-        const usuarioTelefone = await this.repositorioUsuario.encontrarPorTelefone(telefoneString);
+        const usuarioTelefone = await this.repositorioUsuario.buscarPorTelefone(telefoneString);
 
         if(usuarioTelefone != undefined){
             throw new Error("O telefone já está ativo.");

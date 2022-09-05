@@ -11,5 +11,8 @@ roteadorLeitura.use(middlewareAutoriz);
 roteadorLeitura.post('/adicionar', controladorLeitura.adicionar);
 roteadorLeitura.get('/listar-geral', controladorLeitura.listarGeral);
 roteadorLeitura.get('/listar-usuario/:id', controladorLeitura.listarPorUsuario);
+roteadorLeitura.post('/remover', controladorLeitura.remover);
+roteadorLeitura.post('/definir-pagina', controladorLeitura.definirPagina);
+roteadorLeitura.post('/definir-status', controladorLeitura.definirStatus);
 
 export {roteadorLeitura};

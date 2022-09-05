@@ -13,7 +13,7 @@ export class RepositoryLeitura{
             RETURNING leitura_id
         `;
 
-        const valoresInserir = [leitura.usuario_id, leitura.titulo, leitura.sub_titulo, leitura.tags, "Em andamento"];
+        const valoresInserir = [leitura.usuario_id, leitura.titulo, leitura.sub_titulo, leitura.tags, "EM ANDAMENTO"];
 
         const resultado = await clientePg.query(textoInserir, valoresInserir);
 
@@ -59,15 +59,51 @@ export class RepositoryLeitura{
         return leituras;
     }
 
+    public async buscarPorId(leituraId: number){
+        const clientePg = new Client(credenciais);
+        await clientePg.connect();
+
+        const textoEncontrar = "SELECT * FROM leitura WHERE leitura_id = $1";
+        const valorEncontrar = [leituraId];
+
+        const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        return resultado.rows[0] as Leitura;
+    }
+
     public async remover(leituraId: number){
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
-        const textoEncontrar = "DELETE FROM leitura WHERE leitura_id = $1";
+        const textoEncontrar = "DELETE FROM leitura WHERE leitura_id = $1 RETURNING titulo";
         const valorEncontrar = [leituraId];
 
-        await clientePg.query(textoEncontrar, valorEncontrar);
+        const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
 
-        return true;
+        return resultado.rows[0]['titulo'];
+    }
+
+    public async definirPagina(leituraId: number, pagina: number){
+        const clientePg = new Client(credenciais);
+        await clientePg.connect();
+
+        const textoEncontrar = "UPDATE leitura SET pagina_atual = $1 WHERE leitura_id = $2 RETURNING pagina_atual";
+        const valorEncontrar = [pagina, leituraId];
+
+        const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        return resultado.rows[0]['pagina_atual'];
+    }
+
+    public async definirStatus(leituraId: number, status: string){
+        const clientePg = new Client(credenciais);
+        await clientePg.connect();
+
+        const textoEncontrar = "UPDATE leitura SET status = $1 WHERE leitura_id = $2 RETURNING status";
+        const valorEncontrar = [status, leituraId];
+
+        const resultado = await clientePg.query(textoEncontrar, valorEncontrar);
+
+        return resultado.rows[0]['status'];
     }
 }

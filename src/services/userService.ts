@@ -10,7 +10,7 @@ export class ServiceUsuario{
     }
 
     public async registrar(usuario: Usuario){
-        const usuarioEncontrado = await this.repositorio.encontrarUsuario(usuario.email);
+        const usuarioEncontrado = await this.repositorio.buscarUsuario(usuario.email);
 
         if(usuarioEncontrado != undefined){
             throw new Error("Já existe uma conta com este email.");
@@ -31,7 +31,7 @@ export class ServiceUsuario{
     }
 
     public async entrar(usuario: Usuario){
-        const usuarioEncontrado = await this.repositorio.encontrarUsuario(usuario.email);
+        const usuarioEncontrado = await this.repositorio.buscarUsuario(usuario.email);
 
         if(usuarioEncontrado == undefined){
             throw new Error("Conta não encontrada.");
@@ -54,8 +54,8 @@ export class ServiceUsuario{
         return {mensagem: "Telefone ativado."}
     }
 
-    public async encontrarUsuario(email: string){
-        const usuarioEncontrado = await this.repositorio.encontrarUsuario(email);
+    public async buscarUsuario(email: string){
+        const usuarioEncontrado = await this.repositorio.buscarUsuario(email);
 
         return usuarioEncontrado;
     }

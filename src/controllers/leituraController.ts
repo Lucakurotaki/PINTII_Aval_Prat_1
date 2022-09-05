@@ -16,7 +16,7 @@ export class ControladorLeitura{
         const {usuario_email, titulo, sub_titulo, tags} = req.body;
 
         try{
-            const usuario = await serviceUsuario.encontrarUsuario(usuario_email);
+            const usuario = await serviceUsuario.buscarUsuario(usuario_email);
 
             const usuario_id = usuario['usuario_id'];
 
@@ -24,7 +24,9 @@ export class ControladorLeitura{
 
             const leituraId = await serviceLeitura.adicionar(leitura);
 
-            return res.status(201).json({leituraId});
+            const leituraAdicionado = await serviceLeitura.buscarPorId(leituraId);
+
+            return res.status(201).json({mensagem: "Leitura adicionada com sucesso.", leitura: leituraAdicionado});
 
         }catch(e){
             const erro = e as Error;
@@ -52,9 +54,6 @@ export class ControladorLeitura{
         const repositorioLeitura = new RepositoryLeitura();
         const serviceLeitura = new ServiceLeitura(repositorioLeitura);
 
-        const repositorioUsuario = new RepositoryUsuario();
-        const serviceUsuario = new ServiceUsuario(repositorioUsuario);
-
         const usuario_id = Number(req.params.id);
 
         try{
@@ -67,6 +66,93 @@ export class ControladorLeitura{
         }catch(e){
             const error = e as Error;
             return res.status(400).json({error: error.message});
+        }
+    }
+
+    public async remover(req: Request, res: Response): Promise<Response>{
+        const repositorioLeitura = new RepositoryLeitura();
+        const serviceLeitura = new ServiceLeitura(repositorioLeitura);
+        
+        const repositorioUsuario = new RepositoryUsuario();
+        const serviceUsuario = new ServiceUsuario(repositorioUsuario);
+
+        const {usuario_email, leitura_id} = req.body;
+
+        try{
+            const usuario = await serviceUsuario.buscarUsuario(usuario_email);
+            
+            const leitura = await serviceLeitura.buscarPorId(leitura_id);
+
+            if(usuario['usuario_id'] != leitura.usuario_id){
+                throw new Error("Acesso negado.");
+            }
+
+            const resultado = await serviceLeitura.remover(leitura_id);
+
+            return res.status(200).json({mensagem: `Leitura [${resultado}] removida com sucesso.`});
+
+            
+        }catch(e){
+            const erro = e as Error;
+            return res.status(400).json({erro: erro.message});
+        }
+    }
+
+    public async definirPagina(req: Request, res: Response): Promise<Response>{
+        const repositorioLeitura = new RepositoryLeitura();
+        const serviceLeitura = new ServiceLeitura(repositorioLeitura);
+        
+        const repositorioUsuario = new RepositoryUsuario();
+        const serviceUsuario = new ServiceUsuario(repositorioUsuario);
+
+        const {usuario_email, leitura_id, pagina} = req.body;
+
+        try{
+            const usuario = await serviceUsuario.buscarUsuario(usuario_email);
+            
+            const leitura = await serviceLeitura.buscarPorId(leitura_id);
+
+            if(usuario['usuario_id'] != leitura.usuario_id){
+                throw new Error("Acesso negado.");
+            }
+
+            const resultado = await serviceLeitura.definirPagina(leitura_id, pagina);
+
+            return res.status(200).json({mensagem: `A página atual da leitura [${leitura.titulo}] definida como ${resultado}.`});
+
+            
+        }catch(e){
+            const erro = e as Error;
+            return res.status(400).json({erro: erro.message});
+        }
+    }
+
+    public async definirStatus(req: Request, res: Response): Promise<Response>{
+        const repositorioLeitura = new RepositoryLeitura();
+        const serviceLeitura = new ServiceLeitura(repositorioLeitura);
+        
+        const repositorioUsuario = new RepositoryUsuario();
+        const serviceUsuario = new ServiceUsuario(repositorioUsuario);
+
+        const {usuario_email, leitura_id, status} = req.body;
+
+        try{
+            const usuario = await serviceUsuario.buscarUsuario(usuario_email);
+            
+            const leitura = await serviceLeitura.buscarPorId(leitura_id);
+
+            if(usuario['usuario_id'] != leitura.usuario_id){
+                throw new Error("Acesso negado.");
+            }
+
+            const resultado = await serviceLeitura.definirStatus(leitura_id, status);
+
+            return res.status(200).json({mensagem: `O status da leitura [${leitura.titulo}] definida como ${resultado}.`});
+
+            
+        }catch(e){
+            const erro = e as Error;
+            return res.status(400).json({erro: erro.message});
         }
     }
 }
