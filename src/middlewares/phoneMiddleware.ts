@@ -6,12 +6,10 @@ export const middlewareTelefone = async(req: Request, res: Response, next: NextF
     const repositorioUsuario = new RepositoryUsuario();
     const serviceUsuario = new ServiceUsuario(repositorioUsuario);
 
-    const usuario_email = req.body.usuario_email;
+    const telefone = req.body.telefone;
 
     try{
-        const usuario = await serviceUsuario.buscarUsuario(usuario_email);
-
-        console.log(usuario);
+        const usuario = await serviceUsuario.buscarPorTelefone(telefone);
 
         if(usuario['usuario_telefone'] == undefined){
             throw new Error("Acesso negado. Ative o telefone.");

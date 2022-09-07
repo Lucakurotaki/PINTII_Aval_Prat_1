@@ -1,6 +1,6 @@
 import { Client, credenciais } from "../database/postgresPersistence";
 
-export class RepositoryAtivacao{
+export class RepositoryCodigo{
 
     public async registrarCodigoEmail(email: string, codigo: string, iat: string){
         const clientePg = new Client(credenciais);

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ControladorAuth } from "../controllers/authController";
+import { roteadorTelefone } from "./phoneRoutes";
 
 const controladorAuth = new ControladorAuth();
 
@@ -10,7 +11,6 @@ roteadorAuth.post('/entrar', controladorAuth.entrar);
 roteadorAuth.post('/ativar', controladorAuth.ativarConta);
 roteadorAuth.post('/refresh', controladorAuth.refresh);
 
-roteadorAuth.post('/cadastrar-telefone', controladorAuth.cadastrarTelefone);
-roteadorAuth.post('/ativar-telefone', controladorAuth.ativarTelefone);
+roteadorAuth.use('/telefone', roteadorTelefone);
 
 export {roteadorAuth};

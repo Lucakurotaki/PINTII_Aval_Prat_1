@@ -57,6 +57,16 @@ export class ServiceUsuario{
     public async buscarUsuario(email: string){
         const usuarioEncontrado = await this.repositorio.buscarUsuario(email);
 
+        if (usuarioEncontrado == undefined) {
+            throw new Error("Usuario não cadastrado.");
+        }
+
         return usuarioEncontrado;
+    }
+
+    public async buscarPorTelefone(telefone: number){
+        const telefoneString = telefone.toString();
+
+        return this.repositorio.buscarPorTelefone(telefoneString);
     }
 }
