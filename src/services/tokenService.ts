@@ -1,5 +1,6 @@
 import { RepositoryToken } from "../repositories/tokenRepository";
 import jwt, {JwtPayload} from 'jsonwebtoken';
+import { Tokens } from "../entities/tokens";
 
 export class ServiceToken{
     private repositorio: RepositoryToken;
@@ -16,10 +17,10 @@ export class ServiceToken{
 
         await this.repositorio.salvar(email, iat, refreshToken);
 
-        return {accessToken, refreshToken};
+        return {accessToken, refreshToken} as Tokens;
     }
 
-    public async verificarRefreshToken(token: string){
+    public async verificarRefreshToken(token: string):Promise<string>{
         const {email} = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
         if(!{email}){
@@ -35,7 +36,7 @@ export class ServiceToken{
         return email;
     }
 
-    public async verificarAccessToken(token: string){
+    public async verificarAccessToken(token: string):Promise<string>{
         const {email, tokeniat} = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
         if(!{email, tokeniat}){

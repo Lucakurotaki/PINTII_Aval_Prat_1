@@ -1,8 +1,8 @@
 export class Usuario{
-    user_id?: number;
-    nome?: string;
-    email: string;
-    telefone?: number;
-    senha: string;
-    contaAtiva?: boolean;
+    usuario_id?: number;
+    usuario_nome?: string;
+    usuario_email: string;
+    usuario_telefone?: number;
+    usuario_senha: string;
+    conta_ativa?: boolean;
 }

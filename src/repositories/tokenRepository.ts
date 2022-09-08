@@ -3,7 +3,7 @@ import jwt,  {JwtPayload} from "jsonwebtoken";
 import 'dotenv/config';
 
 export class RepositoryToken{
-    public async salvar(email: string, iat: string, refreshToken: string){
+    public async salvar(email: string, iat: string, refreshToken: string):Promise<boolean>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -38,7 +38,7 @@ export class RepositoryToken{
         return true;
     }
 
-    public async verificarAccessToken(email: string){
+    public async verificarAccessToken(email: string):Promise<string>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -51,10 +51,10 @@ export class RepositoryToken{
 
         const iatEncontrado = usuarioEncontrado.rows[0]['iat'];
 
-        return iatEncontrado;
+        return iatEncontrado as string;
     }
 
-    public async verificarRefreshToken(email: string){
+    public async verificarRefreshToken(email: string):Promise<string>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -67,7 +67,7 @@ export class RepositoryToken{
 
         const tokenEncontrado = usuarioEncontrado.rows[0]['refreshtoken'];
 
-        return tokenEncontrado;
+        return tokenEncontrado as string;
     }
 
     

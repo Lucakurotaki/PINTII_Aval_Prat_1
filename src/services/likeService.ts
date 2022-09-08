@@ -8,7 +8,7 @@ export class ServiceLike{
         this.repositorio = repositoryLike;
     }
 
-    public async curtir(like: Like){
+    public async curtir(like: Like): Promise<number>{
         const likes = await this.repositorio.listar(like.leitura_id);
 
         for(let i = 0; i < likes.length; i++){
@@ -19,15 +19,15 @@ export class ServiceLike{
         return this.repositorio.curtir(like);
     }
 
-    public async buscarPorId(likeId: number){
+    public async buscarPorId(likeId: number): Promise<Like>{
         return this.repositorio.buscarPorId(likeId);
     }
 
-    public async descurtir(likeId: number){
+    public async descurtir(likeId: number): Promise<number>{
         return this.repositorio.descurtir(likeId);
     }
 
-    public async listar(leituraId: number){
+    public async listar(leituraId: number): Promise<Like[]>{
         return this.repositorio.listar(leituraId);
     }
 }

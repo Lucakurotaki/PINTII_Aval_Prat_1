@@ -3,7 +3,7 @@ import { Usuario } from "../entities/user";
 
 export class RepositoryUsuario{
 
-    public async registrar(usuario: Usuario){
+    public async registrar(usuario: Usuario): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -13,7 +13,7 @@ export class RepositoryUsuario{
             RETURNING usuario_id
         `;
 
-        const valoresInserir = [usuario.nome, usuario.email, usuario.senha];
+        const valoresInserir = [usuario.usuario_nome, usuario.usuario_email, usuario.usuario_senha];
 
         const resultado = await clientePg.query(textoInserir, valoresInserir);
         
@@ -24,7 +24,7 @@ export class RepositoryUsuario{
         return usuarioId;
     }
 
-    public async ativarConta(email: string){
+    public async ativarConta(email: string):Promise<boolean>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -35,10 +35,10 @@ export class RepositoryUsuario{
 
         await clientePg.end();
 
-        return resultado;
+        return true;
     }
 
-    public async registrarTelefone(email: string, telefone: number){
+    public async registrarTelefone(email: string, telefone: number): Promise<boolean>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -49,10 +49,10 @@ export class RepositoryUsuario{
 
         await clientePg.end();
 
-        return resultado;
+        return true;
     }
 
-    public async buscarUsuario(email: string){
+    public async buscarUsuario(email: string):Promise<Usuario>{
         const clientePg = new Client(credenciais);
 
         await clientePg.connect();
@@ -64,12 +64,12 @@ export class RepositoryUsuario{
 
         await clientePg.end();
 
-        const usuarioEncotrado = resultado.rows[0];
+        const usuarioEncotrado = resultado.rows[0] as Usuario;
 
         return usuarioEncotrado;
     }
 
-    public async buscarPorTelefone(telefone: string){
+    public async buscarPorTelefone(telefone: string): Promise<Usuario>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -80,7 +80,7 @@ export class RepositoryUsuario{
 
         await clientePg.end();
 
-        return resultadoTelefone.rows[0];
+        return resultadoTelefone.rows[0] as Usuario;
     }
 
 }

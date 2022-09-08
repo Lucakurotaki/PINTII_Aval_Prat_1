@@ -3,7 +3,7 @@ import { Client, credenciais } from "../database/postgresPersistence";
 
 export class RepositoryLeitura{
 
-    public async adicionar(leitura: Leitura){
+    public async adicionar(leitura: Leitura): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -24,7 +24,7 @@ export class RepositoryLeitura{
         return leituraId;
     }
 
-    public async listarGeral(){
+    public async listarGeral():Promise<Leitura[]>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -43,7 +43,7 @@ export class RepositoryLeitura{
         return leituras;
     }
 
-    public async listarPorUsuario(usuarioId: number){
+    public async listarPorUsuario(usuarioId: number): Promise<Leitura[]>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -63,7 +63,7 @@ export class RepositoryLeitura{
         return leituras;
     }
 
-    public async buscarPorId(leituraId: number){
+    public async buscarPorId(leituraId: number): Promise<Leitura>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -77,7 +77,7 @@ export class RepositoryLeitura{
         return resultado.rows[0] as Leitura;
     }
 
-    public async remover(leituraId: number){
+    public async remover(leituraId: number):Promise<string>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -91,7 +91,7 @@ export class RepositoryLeitura{
         return resultado.rows[0]['titulo'];
     }
 
-    public async definirPagina(leituraId: number, pagina: number){
+    public async definirPagina(leituraId: number, pagina: number):Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -105,7 +105,7 @@ export class RepositoryLeitura{
         return resultado.rows[0]['pagina_atual'];
     }
 
-    public async definirStatus(leituraId: number, status: string){
+    public async definirStatus(leituraId: number, status: string):Promise<string>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 

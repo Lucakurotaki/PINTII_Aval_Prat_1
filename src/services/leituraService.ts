@@ -8,31 +8,31 @@ export class ServiceLeitura{
         this.repositorio = repositoryLeitura;
     }
 
-    public async adicionar(leitura: Leitura){
+    public async adicionar(leitura: Leitura):Promise<number>{
         return this.repositorio.adicionar(leitura);
     }
 
-    public async listarGeral(){
+    public async listarGeral(): Promise<Leitura[]>{
         return this.repositorio.listarGeral();
     }
 
-    public async listarPorUsuario(usuarioId: number){
+    public async listarPorUsuario(usuarioId: number): Promise<Leitura[]>{
         return this.repositorio.listarPorUsuario(usuarioId);
     }
 
-    public async buscarPorId(leituraId: number){
+    public async buscarPorId(leituraId: number): Promise<Leitura>{
         return this.repositorio.buscarPorId(leituraId);
     }
 
-    public async remover(leituraId: number){
+    public async remover(leituraId: number): Promise<string>{
         return this.repositorio.remover(leituraId);
     }
 
-    public async definirPagina(leituraId: number, pagina: number){
+    public async definirPagina(leituraId: number, pagina: number): Promise<number>{
         return this.repositorio.definirPagina(leituraId, pagina);
     }
 
-    public async definirStatus(leituraId: number, status: string){
+    public async definirStatus(leituraId: number, status: string): Promise<string>{
         const statusUC = status.toUpperCase();
         if(statusUC != "PARADA" && statusUC != "CONCLUIDA" && statusUC != "EM ANDAMENTO"){
             throw new Error("O valor deve ser 'PARADA', 'CONCLUIDA' ou 'EM ANDAMENTO'");

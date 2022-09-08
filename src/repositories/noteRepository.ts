@@ -2,7 +2,7 @@ import { Anotacao } from "../entities/note";
 import { Client, credenciais } from "../database/postgresPersistence";
 
 export class RepositoryAnotacao{
-    public async adicionar(anotacao: Anotacao){
+    public async adicionar(anotacao: Anotacao): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -23,7 +23,7 @@ export class RepositoryAnotacao{
         return leituraId;
     }
 
-    public async buscarPorId(anotacaoId: number){
+    public async buscarPorId(anotacaoId: number): Promise<Anotacao>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -37,7 +37,7 @@ export class RepositoryAnotacao{
         return resultado.rows[0] as Anotacao;
     }
 
-    public async listar(leituraId: number){
+    public async listar(leituraId: number): Promise<Anotacao[]>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -57,7 +57,7 @@ export class RepositoryAnotacao{
         return anotacoes;
     }
 
-    public async remover(anotacaoId: number){
+    public async remover(anotacaoId: number): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 

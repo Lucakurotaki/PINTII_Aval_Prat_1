@@ -29,7 +29,7 @@ export class ControladorLike{
 
             const usuario = await serviceUsuario.buscarUsuario(usuario_email);
 
-            const usuario_id = usuario['usuario_id'];
+            const usuario_id = usuario.usuario_id;
 
             if(usuario_id == leitura.usuario_id){
                 throw new Error("Não é possível curtir a leitura própria.");
@@ -94,7 +94,7 @@ export class ControladorLike{
 
             const usuario = await serviceUsuario.buscarUsuario(usuario_email);
 
-            const usuario_id = usuario['usuario_id'];
+            const usuario_id = usuario.usuario_id;
 
             if(usuario_id != like.usuario_id){
                 throw new Error("Acesso negado.")

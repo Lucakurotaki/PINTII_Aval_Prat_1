@@ -2,7 +2,7 @@ import { Client, credenciais } from "../database/postgresPersistence";
 import { Like } from "../entities/like";
 
 export class RepositoryLike{
-    public async curtir(like: Like){
+    public async curtir(like: Like): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -21,7 +21,7 @@ export class RepositoryLike{
         return resultado.rows[0]['like_id'];
     }
 
-    public async buscarPorId(likeId: number){
+    public async buscarPorId(likeId: number): Promise<Like>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -35,7 +35,7 @@ export class RepositoryLike{
         return resultado.rows[0] as Like;
     }
 
-    public async descurtir(likeId: number){
+    public async descurtir(likeId: number): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
@@ -49,7 +49,7 @@ export class RepositoryLike{
         return resultado.rows[0]['leitura_id'];
     }
 
-    public async listar(leituraId: number){
+    public async listar(leituraId: number): Promise<Like[]>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 

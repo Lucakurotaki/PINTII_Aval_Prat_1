@@ -7,7 +7,7 @@ export class ServiceCodigo{
         this.repositorioCodigo = repositoryCodigo;
     }
 
-    public async gerarCodigoEmail(email: string){
+    public async gerarCodigoEmail(email: string): Promise<string>{
         const codigo = (Math.floor(Math.random() * 99999) + 10000).toString();
         const iat = Date.now().toString();
 
@@ -16,7 +16,7 @@ export class ServiceCodigo{
         return codigo;
     }
 
-    public async verificarCodigoEmail(email: string, codigo: number){
+    public async verificarCodigoEmail(email: string, codigo: number): Promise<boolean>{
         const agora = Date.now();
         const codigoString = codigo.toString();
 
@@ -25,7 +25,7 @@ export class ServiceCodigo{
         if(ativacaoEncontrado == undefined){
             throw new Error("Código inválido.");
         }
-        const iatEncontrado = ativacaoEncontrado['iat'];
+        const iatEncontrado = ativacaoEncontrado.iat;
 
         if(agora - Number(iatEncontrado) > 7200000){
             throw new Error("Código expirado.");
@@ -34,7 +34,7 @@ export class ServiceCodigo{
         return true;
     }
 
-    public async gerarCodigoSMS(telefone: number){
+    public async gerarCodigoSMS(telefone: number): Promise<string>{
 
         const telefoneString = telefone.toString();
 
@@ -46,7 +46,7 @@ export class ServiceCodigo{
         return codigo;
     }
 
-    public async verificarCodigoSMS(telefone: number, codigo: number){
+    public async verificarCodigoSMS(telefone: number, codigo: number):Promise<boolean>{
 
         const agora = Date.now();
         const codigoString = codigo.toString();
@@ -57,7 +57,7 @@ export class ServiceCodigo{
         if(resultado == undefined){
             throw new Error("Código e/ou telefone inválido.");
         }
-        const iatEncontrado = resultado['iat'];
+        const iatEncontrado = resultado.iat;
 
         if(agora - Number(iatEncontrado) > 7200000){
             throw new Error("Código expirado.")

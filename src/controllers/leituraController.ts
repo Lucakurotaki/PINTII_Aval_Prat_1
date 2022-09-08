@@ -18,7 +18,7 @@ export class ControladorLeitura{
         try{
             const usuario = await serviceUsuario.buscarUsuario(usuario_email);
 
-            const usuario_id = usuario['usuario_id'];
+            const usuario_id = usuario.usuario_id;
 
             const leitura = {usuario_id, titulo, sub_titulo, tags} as Leitura;
 
@@ -83,7 +83,7 @@ export class ControladorLeitura{
             
             const leitura = await serviceLeitura.buscarPorId(leitura_id);
 
-            if(usuario['usuario_id'] != leitura.usuario_id){
+            if(usuario.usuario_id != leitura.usuario_id){
                 throw new Error("Acesso negado.");
             }
 
@@ -112,7 +112,7 @@ export class ControladorLeitura{
             
             const leitura = await serviceLeitura.buscarPorId(leitura_id);
 
-            if(usuario['usuario_id'] != leitura.usuario_id){
+            if(usuario.usuario_id != leitura.usuario_id){
                 throw new Error("Acesso negado.");
             }
 
@@ -141,7 +141,7 @@ export class ControladorLeitura{
             
             const leitura = await serviceLeitura.buscarPorId(leitura_id);
 
-            if(usuario['usuario_id'] != leitura.usuario_id){
+            if(usuario.usuario_id != leitura.usuario_id){
                 throw new Error("Acesso negado.");
             }
 

@@ -19,11 +19,11 @@ export class ControladorTelefone{
         try {
             const usuarioEncontrado = await serviceUsuario.buscarUsuario(email);
 
-            if (!usuarioEncontrado['conta_ativa']) {
+            if (!usuarioEncontrado.conta_ativa) {
                 throw new Error("Conta não ativada.");
             }
 
-            if (usuarioEncontrado['usuario_telefone'] != null) {
+            if (usuarioEncontrado.usuario_telefone != null) {
                 throw new Error("O telefone já está ativo.");
             }
 
@@ -66,15 +66,15 @@ export class ControladorTelefone{
 
             const usuarioEmail = await serviceUsuario.buscarUsuario(email);
 
-            if (usuarioEmail['usuario_telefone'] != undefined) {
+            if (usuarioEmail.usuario_telefone != undefined) {
                 throw new Error("O telefone já está ativo.");
             }
 
             await serviceCodigo.verificarCodigoSMS(telefone, codigo);
 
-            const resultado = await serviceUsuario.registrarTelefone(email, telefone);
+            await serviceUsuario.registrarTelefone(email, telefone);
 
-            return res.status(200).json(resultado);
+            return res.status(200).json({mensagem: "Telefone ativado."});
         } catch (e) {
             const erro = e as Error;
             return res.status(400).json({ erro: erro.message });
@@ -127,11 +127,11 @@ export class ControladorTelefone{
             const telefoneString = telefone.toString();
             const usuarioTelefone = await serviceUsuario.buscarPorTelefone(telefoneString);
 
-            const email = usuarioTelefone['usuario_email'];
+            const email = usuarioTelefone.usuario_email;
 
             const tokens = await serviceToken.salvar(email);
 
-            return res.status(200).json({ usuario: usuarioTelefone, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken });
+            return res.status(200).json({ usuario: usuarioTelefone, tokens });
         }catch (e) {
             const erro = e as Error;
             return res.status(400).json({ erro: erro.message });
@@ -192,7 +192,7 @@ export class ControladorTelefone{
 
             const usuarioTelefone = await serviceUsuario.buscarPorTelefone(telefone);
 
-            const email = usuarioTelefone['usuario_email'];
+            const email = usuarioTelefone.usuario_email;
 
             await serviceCodigo.verificarCodigoSMS(telefoneNovo, codigo);
 

@@ -18,7 +18,7 @@ export class ControladorAuth {
 
         const { email, nome, senha } = req.body;
 
-        const usuario = { email, nome, senha } as Usuario;
+        const usuario = { usuario_email: email, usuario_nome: nome, usuario_senha: senha } as Usuario;
 
         try {
             const resultado = await serviceUsuario.registrar(usuario);
@@ -51,15 +51,15 @@ export class ControladorAuth {
         try {
             const usuarioEncontrado = await serviceUsuario.buscarUsuario(email);
 
-            if (usuarioEncontrado["conta_ativa"] == true) {
+            if (usuarioEncontrado.conta_ativa == true) {
                 throw new Error("A conta já está ativa.");
             }
 
             await serviceCodigo.verificarCodigoEmail(email, codigo);
 
-            const resultado = await serviceUsuario.ativarConta(email);
+            await serviceUsuario.ativarConta(email);
 
-            return res.status(200).json(resultado);
+            return res.status(200).json({mensagem: "Conta ativada."});
         } catch (e) {
             const erro = e as Error;
             return res.status(400).json({ erro: erro.message });
@@ -78,7 +78,7 @@ export class ControladorAuth {
         try {
             const usuarioEncontrado = await serviceUsuario.buscarUsuario(email);
 
-            if (usuarioEncontrado["conta_ativa"] == true) {
+            if (usuarioEncontrado.conta_ativa == true) {
                 throw new Error("A conta já está ativa.");
             }
 
@@ -106,11 +106,11 @@ export class ControladorAuth {
         const { email, senha } = req.body;
 
         try {
-            const resultado = await serviceUsuario.entrar({ email, senha });
+            const resultado = await serviceUsuario.entrar({ usuario_email: email, usuario_senha: senha });
 
             const tokens = await serviceToken.salvar(email);
 
-            return res.status(200).json({ usuario: resultado, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken });
+            return res.status(200).json({ usuario: resultado, tokens});
         } catch (e) {
             const erro = e as Error;
             return res.status(400).json({ erro: erro.message });
@@ -134,10 +134,7 @@ export class ControladorAuth {
 
             const tokens = await serviceToken.salvar(email);
 
-            const accessToken = tokens.accessToken;
-            const refreshToken = tokens.refreshToken;
-
-            return res.status(201).json({ usuario: email, accessToken, refreshToken });
+            return res.status(201).json({ usuario: email, tokens });
         } catch (e) {
             const erro = e as Error;
             return res.status(400).json({ erro: erro.message });
