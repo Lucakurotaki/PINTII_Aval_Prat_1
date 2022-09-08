@@ -49,7 +49,7 @@ export class ControladorAuth {
         const { email, codigo } = req.body;
 
         try {
-            const usuarioEncontrado = await repositorioUsuario.buscarUsuario(email);
+            const usuarioEncontrado = await serviceUsuario.buscarUsuario(email);
 
             if (usuarioEncontrado["conta_ativa"] == true) {
                 throw new Error("A conta já está ativa.");
@@ -64,6 +64,36 @@ export class ControladorAuth {
             const erro = e as Error;
             return res.status(400).json({ erro: erro.message });
         }
+    }
+
+    public async gerarCodigoAtivacao(req: Request, res: Response): Promise<Response>{
+        const repositorioUsuario = new RepositoryUsuario();
+        const serviceUsuario = new ServiceUsuario(repositorioUsuario);
+
+        const repositorioCodigo = new RepositoryCodigo();
+        const serviceCodigo = new ServiceCodigo(repositorioCodigo);
+
+        const { email } = req.body;
+
+        try {
+            const usuarioEncontrado = await serviceUsuario.buscarUsuario(email);
+
+            if (usuarioEncontrado["conta_ativa"] == true) {
+                throw new Error("A conta já está ativa.");
+            }
+
+            const codigo = await serviceCodigo.gerarCodigoEmail(email);
+
+            console.log("----------EMAIL DE ATIVAÇÃO----------\n\nCÓDIGO: ", codigo, "\n\n");
+
+            return res.status(201).json({ mensagem: "Aguardando a ativação." });
+
+        } catch (e) {
+            const erro = e as Error;
+            return res.status(400).json({ erro: erro.message });
+        }
+
+
     }
 
     public async entrar(req: Request, res: Response): Promise<Response> {

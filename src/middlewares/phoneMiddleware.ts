@@ -11,7 +11,7 @@ export const middlewareTelefone = async(req: Request, res: Response, next: NextF
     try{
         const usuario = await serviceUsuario.buscarPorTelefone(telefone);
 
-        if(usuario['usuario_telefone'] == undefined){
+        if(usuario == undefined){
             throw new Error("Acesso negado. Ative o telefone.");
         }
 

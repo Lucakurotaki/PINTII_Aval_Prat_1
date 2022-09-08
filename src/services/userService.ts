@@ -48,8 +48,8 @@ export class ServiceUsuario{
         return usuarioEncontrado;
     }
 
-    public async ativarTelefone(email: string, telefone: number){
-        await this.repositorio.ativarTelefone(email, telefone);
+    public async registrarTelefone(email: string, telefone: number){
+        await this.repositorio.registrarTelefone(email, telefone);
 
         return {mensagem: "Telefone ativado."}
     }

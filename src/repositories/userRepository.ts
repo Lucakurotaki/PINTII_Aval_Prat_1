@@ -38,7 +38,7 @@ export class RepositoryUsuario{
         return resultado;
     }
 
-    public async ativarTelefone(email: string, telefone: number){
+    public async registrarTelefone(email: string, telefone: number){
         const clientePg = new Client(credenciais);
         await clientePg.connect();
 
