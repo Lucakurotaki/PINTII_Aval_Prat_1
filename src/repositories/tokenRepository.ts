@@ -1,8 +1,8 @@
 import { Client, credenciais } from "../database/postgresPersistence";
-import jwt,  {JwtPayload} from "jsonwebtoken";
 import 'dotenv/config';
+import { InterfaceRepositoryToken } from "./interfaces/tokenRepositoryInterface";
 
-export class RepositoryToken{
+export class RepositoryToken implements InterfaceRepositoryToken{
     public async salvar(email: string, iat: string, refreshToken: string):Promise<boolean>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();

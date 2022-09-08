@@ -1,7 +1,8 @@
 import { Client, credenciais } from "../database/postgresPersistence";
 import { Like } from "../entities/like";
+import { InterfaceRepositoryLike } from "./interfaces/likeRepositoryInterface";
 
-export class RepositoryLike{
+export class RepositoryLike implements InterfaceRepositoryLike{
     public async curtir(like: Like): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();

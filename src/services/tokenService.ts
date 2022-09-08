@@ -1,11 +1,11 @@
-import { RepositoryToken } from "../repositories/tokenRepository";
 import jwt, {JwtPayload} from 'jsonwebtoken';
 import { Tokens } from "../entities/tokens";
+import { InterfaceRepositoryToken } from "../repositories/interfaces/tokenRepositoryInterface";
 
 export class ServiceToken{
-    private repositorio: RepositoryToken;
+    private repositorio: InterfaceRepositoryToken;
 
-    constructor(repositoryToken: RepositoryToken){
+    constructor(repositoryToken: InterfaceRepositoryToken){
         this.repositorio = repositoryToken;
     }
 

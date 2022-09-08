@@ -1,10 +1,10 @@
 import { Like } from "../entities/like";
-import { RepositoryLike } from "../repositories/likeRepository";
+import { InterfaceRepositoryLike } from "../repositories/interfaces/likeRepositoryInterface";
 
 export class ServiceLike{
-    private repositorio: RepositoryLike;
+    private repositorio: InterfaceRepositoryLike;
 
-    constructor(repositoryLike: RepositoryLike){
+    constructor(repositoryLike: InterfaceRepositoryLike){
         this.repositorio = repositoryLike;
     }
 

@@ -1,10 +1,10 @@
 import { Leitura } from "../entities/leitura";
-import { RepositoryLeitura } from "../repositories/leituraRepository";
+import { InterfaceRepositoryLeitura } from "../repositories/interfaces/leituraRepositoryInterface";
 
 export class ServiceLeitura{
-    private repositorio: RepositoryLeitura;
+    private repositorio: InterfaceRepositoryLeitura;
 
-    constructor(repositoryLeitura: RepositoryLeitura){
+    constructor(repositoryLeitura: InterfaceRepositoryLeitura){
         this.repositorio = repositoryLeitura;
     }
 

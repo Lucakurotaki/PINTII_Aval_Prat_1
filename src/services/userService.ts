@@ -1,11 +1,11 @@
 import { Usuario } from "../entities/user";
-import { RepositoryUsuario } from "../repositories/userRepository";
 import bcrypt from 'bcrypt';
+import { InterfaceRepositoryUsuario } from "../repositories/interfaces/userRepositoryInterface";
 
 export class ServiceUsuario{
-    private repositorio: RepositoryUsuario;
+    private repositorio: InterfaceRepositoryUsuario;
 
-    constructor(repositoryUsuario: RepositoryUsuario){
+    constructor(repositoryUsuario: InterfaceRepositoryUsuario){
         this.repositorio = repositoryUsuario;
     }
 

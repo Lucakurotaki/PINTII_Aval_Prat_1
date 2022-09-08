@@ -1,7 +1,8 @@
 import { Client, credenciais } from "../database/postgresPersistence";
 import { Usuario } from "../entities/user";
+import { InterfaceRepositoryUsuario } from "./interfaces/userRepositoryInterface";
 
-export class RepositoryUsuario{
+export class RepositoryUsuario implements InterfaceRepositoryUsuario{
 
     public async registrar(usuario: Usuario): Promise<number>{
         const clientePg = new Client(credenciais);

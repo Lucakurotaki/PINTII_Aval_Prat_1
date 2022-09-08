@@ -1,7 +1,8 @@
 import { Anotacao } from "../entities/note";
 import { Client, credenciais } from "../database/postgresPersistence";
+import { InterfaceRepositoryAnotacao } from "./interfaces/noteRepositoryInterface";
 
-export class RepositoryAnotacao{
+export class RepositoryAnotacao implements InterfaceRepositoryAnotacao{
     public async adicionar(anotacao: Anotacao): Promise<number>{
         const clientePg = new Client(credenciais);
         await clientePg.connect();

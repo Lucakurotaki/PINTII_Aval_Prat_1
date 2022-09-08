@@ -1,10 +1,10 @@
 import { Anotacao } from "../entities/note";
-import { RepositoryAnotacao } from "../repositories/noteRepository";
+import { InterfaceRepositoryAnotacao } from "../repositories/interfaces/noteRepositoryInterface";
 
 export class ServiceAnotacao{
-    private repositorio: RepositoryAnotacao;
+    private repositorio: InterfaceRepositoryAnotacao;
 
-    constructor(repositoryAnotacao: RepositoryAnotacao){
+    constructor(repositoryAnotacao: InterfaceRepositoryAnotacao){
         this.repositorio = repositoryAnotacao;
     }
 

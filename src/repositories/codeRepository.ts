@@ -1,8 +1,9 @@
 import { Client, credenciais } from "../database/postgresPersistence";
 import { Ativacao } from "../entities/ativacao";
 import { CodigoTelefone } from "../entities/codigoTelefone";
+import { InterfaceRepositoryCodigo } from "./interfaces/codeRepositoryInterface";
 
-export class RepositoryCodigo{
+export class RepositoryCodigo implements InterfaceRepositoryCodigo{
 
     public async registrarCodigoEmail(email: string, codigo: string, iat: string):Promise<boolean>{
         const clientePg = new Client(credenciais);

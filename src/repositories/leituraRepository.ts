@@ -1,7 +1,8 @@
 import { Leitura } from "../entities/leitura";
 import { Client, credenciais } from "../database/postgresPersistence";
+import { InterfaceRepositoryLeitura } from "./interfaces/leituraRepositoryInterface";
 
-export class RepositoryLeitura{
+export class RepositoryLeitura implements InterfaceRepositoryLeitura{
 
     public async adicionar(leitura: Leitura): Promise<number>{
         const clientePg = new Client(credenciais);

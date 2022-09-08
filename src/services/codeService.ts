@@ -1,9 +1,9 @@
-import { RepositoryCodigo } from "../repositories/codeRepository";
+import { InterfaceRepositoryCodigo } from "../repositories/interfaces/codeRepositoryInterface";
 
 export class ServiceCodigo{
-    private repositorioCodigo: RepositoryCodigo;
+    private repositorioCodigo: InterfaceRepositoryCodigo;
 
-    constructor(repositoryCodigo: RepositoryCodigo){
+    constructor(repositoryCodigo: InterfaceRepositoryCodigo){
         this.repositorioCodigo = repositoryCodigo;
     }
 
