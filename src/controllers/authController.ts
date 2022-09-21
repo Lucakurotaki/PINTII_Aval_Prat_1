@@ -6,6 +6,7 @@ import { RepositoryCodigo } from "../repositories/codeRepository";
 import { ServiceUsuario } from "../services/userService";
 import { ServiceCodigo } from "../services/codeService";
 import { ServiceToken } from "../services/tokenService";
+import { sendMail } from "../utils/sendMailUtil";
 
 export class ControladorAuth {
     public async cadastrar(req: Request, res: Response): Promise<Response> {
@@ -28,6 +29,8 @@ export class ControladorAuth {
             }
 
             const codigo = await serviceCodigo.gerarCodigoEmail(email);
+
+            await sendMail(nome, email, codigo);
 
             console.log("----------EMAIL DE ATIVAÇÃO----------\n\nCÓDIGO: ", codigo, "\n\n");
 
